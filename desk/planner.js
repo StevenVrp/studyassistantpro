@@ -291,6 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateTaskCount = () => {
         const remaining = tasks.filter(t => !t.completed).length;
         const total = tasks.length;
+        document.querySelector('#n-tasks').textContent=remaining;
+        document.querySelector('#n-check').textContent=total-remaining;
         const countElement = document.getElementById('taskCount');
         if (countElement) {
             countElement.textContent = `${remaining} of ${total} tasks remaining`;
@@ -533,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Reminders Logic =====
     const renderReminders = () => {
+        document.querySelector('#n-calendar').textContent=reminders.length;
         if (!remindersList) return;
         remindersList.innerHTML = reminders.slice().sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)).map(r => `
             <div class="reminder-item" data-id="${r.id}" style="padding: 1rem; border-left: 4px solid var(--primary); margin-bottom: 0.5rem; background: var(--card);">
