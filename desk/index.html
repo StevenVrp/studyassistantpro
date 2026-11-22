@@ -1,0 +1,181 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Study desk · Study Assistant Pro</title><link rel="icon" href="../Images/favicon.ico"><link rel="stylesheet" href="planner.css"><link rel="stylesheet" href="../assets/suite.css"><link rel="stylesheet" href="desk.css"></head><body><div data-shell data-page="Study desk" data-root="../"></div><main class="workspace" id="workspace"><div class="frame"><span class="eyebrow">Independent learning</span><h1 class="page-title">Study desk</h1><p class="intro">Plan a session, practice recall, and revisit mistakes.</p><div class="toolbar"><nav class="desk-tabs" aria-label="Study tools"><a href="#tasks">Tasks</a><a href="#stats">Statistics</a><a href="#reminders">Reminders</a><a href="#flashcards">Flashcards</a><a href="#journal">Mistake journal</a></nav><div class="desk-actions"><button type="button" id="showTimerBtn" class="suite-secondary">Timer</button><button id="settingsButton" class="suite-secondary">Settings</button></div></div>
+<section class="panel" id="flashcards" hidden><h2>Flashcards</h2><p>Write a question, then test yourself when its review is due.</p><form id="card-form" class="entry-form"><label>Question<input name="question" maxlength="500" required></label><label>Answer<textarea name="answer" maxlength="2000" required></textarea></label><button class="suite-action">Add flashcard</button></form><div id="review" aria-live="polite"></div><details><summary>Manage cards</summary><div id="card-list"></div></details></section>
+<section class="panel" id="journal" hidden><h2>Mistake journal</h2><p>Record what went wrong and the reasoning you’ll use next time.</p><form id="journal-form" class="entry-form"><label>Topic or problem<input name="topic" required maxlength="200"></label><label>Where I went wrong<textarea name="mistake" required maxlength="2000"></textarea></label><label>Correct reasoning<textarea name="reason" required maxlength="2000"></textarea></label><button class="suite-action">Save entry</button></form><div id="journal-list" aria-live="polite"></div></section><!-- Task Section (Home Mode) -->
+            <section id="taskSection">
+                <form id="taskForm" class="task-form">
+                    <div class="form-group">
+                        <input type="text" aria-label="Task title" id="taskInput" class="form-control" placeholder="Task Title" required>
+                        <select aria-label="Subject" id="subjectSelect" class="form-control form-select">
+                            <option value="biology">Biology</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="math">Math</option>
+                            <option value="english">English</option>
+                            <option value="chinese">Chinese</option>
+                            <option value="spanish">Spanish</option>
+                            <option value="french">French</option>
+                            <option value="history">History</option>
+                            <option value="geography">Geography</option>
+                            <option value="technology">Technology</option>
+                            <option value="music">Music</option>
+                            <option value="business">Business</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <select aria-label="Priority" id="prioritySelect" class="form-control form-select">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                        
+                        <!-- Schedule Mode Time Inputs -->
+                        <div class="time-inputs" id="scheduleTimeInputs">
+                            <input type="time" aria-label="Start time" id="startTimeInput" name="startTime" class="form-control">
+                            <span>-</span>
+                            <input type="time" aria-label="End time" id="endTimeInput" name="endTime" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </form>
+
+                <div class="task-list-container">
+                    <div class="task-list-header">
+                        <div>
+                            <span class="task-list-title">Today's Tasks</span>
+                            <span class="task-count" id="taskCount">0 remaining</span>
+                        </div>
+                        <button aria-label="Task actions" id="taskMenuBtn" class="btn btn-icon btn-secondary">
+                            ⋯
+                        </button>
+                    </div>
+                    <div id="taskList" class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Graph Section (Stats Mode) -->
+            <section id="graphSection">
+                <div class="graph-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <button id="backBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h2 class="task-list-title">
+                        <i class="fas fa-chart-pie"></i> Statistics
+                    </h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="efficiencyChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+                <div id="dataDisplay" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Study Data</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Reminders Section -->
+            <section id="remindersSection">
+                <div class="reminders-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <button id="backFromRemindersBtn" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h2 class="task-list-title">
+                        <i class="fas fa-bell"></i> Reminders
+                    </h2>
+                </div>
+                <form id="reminderForm" class="task-form">
+                    <div class="form-group">
+                        <input type="text" aria-label="Reminder text" id="reminderInput" class="form-control" placeholder="Reminder text..." required>
+                        <input type="datetime-local" aria-label="Due date and time" id="reminderDueDate" class="form-control" required>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Reminder
+                        </button>
+                    </div>
+                </form>
+                <div id="remindersList" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Active Reminders</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+                <div hidden id="countdownDisplay" class="task-list-container">
+                    <div class="task-list-header">
+                        <span class="task-list-title">Upcoming Deadlines</span>
+                    </div>
+                    <div class="task-list"></div>
+                </div>
+            </section>
+
+            </div></main><!-- Floating Timer -->
+    <div id="floatingTimer" class="floating-timer">
+        <div class="timer-header">
+            <span>Study Timer</span>
+            <div class="timer-controls">
+                <button aria-label="Collapse timer" id="toggleTimerBtn" class="btn btn-icon">−</button>
+                <button aria-label="Close timer" id="closeTimerBtn" class="btn btn-icon">×</button>
+            </div>
+        </div>
+        <div class="timer-body">
+            <div class="timer-inputs">
+                <input type="number" aria-label="Hours" id="hoursInput" min="0" max="23" placeholder="H">
+                <span>:</span>
+                <input type="number" aria-label="Minutes" id="minutesInput" min="0" max="59" placeholder="M">
+                <span>:</span>
+                <input type="number" aria-label="Seconds" id="secondsInput" min="0" max="59" placeholder="S">
+            </div>
+            <div class="timer-display" id="timerDisplay">00:00:00</div>
+            <div class="timer-actions">
+                <button id="startTimerBtn" class="btn btn-startbtntimer">
+                    <i class="fas fa-play"></i> Start
+                </button>
+                <button id="resetTimerBtn" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal" role="dialog" aria-modal="true" aria-label="Study settings">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3 class="settings-title">Settings</h3>
+                <button aria-label="Close settings" id="settingsClose" class="btn btn-icon btn-secondary">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-group">
+                    <h4 style="margin-bottom: 0.5rem;">Timer Settings</h4>
+                    <div class="setting-item">
+                        <span>Default focus session (minutes)</span>
+                        <input type="number" id="targetCompletionTime" min="5" max="120" class="form-control" style="width: 80px;">
+                    </div>    
+                    <h4 style="margin-bottom: 0.5rem; margin-top: 1rem;">Appearance</h4>
+                    <div class="setting-item">
+                        <span>Dark Mode</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" aria-label="Dark mode" id="darkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <h4 style="margin-bottom: 0.5rem; margin-top: 1rem;">App Mode</h4>
+                    <div class="setting-item">
+                        <span>Current Mode:</span>
+                        <select id="appModeSelect" class="form-control" style="width: auto;">
+                            <option value="focus">Focus Mode (Default)</option>
+                            <option value="schedule">Schedule Mode</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-footer"><button id="resetAllBtn" class="btn btn-secondary">Clear planner data</button>
+                <button id="settingsSave" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../chart.js"></script><script src="../assets/shell.js"></script><script src="planner.js"></script><script src="practice.js"></script></body></html>

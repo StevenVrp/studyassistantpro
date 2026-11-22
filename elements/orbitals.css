@@ -1,0 +1,28 @@
+.orbital-lab { --ol-accent:#167c75; --ol-line:var(--border-color,#abbec0); display:grid; min-width:0; gap:.72rem; text-align:left; color:inherit; font:inherit; }
+.orbital-lab h3 { margin:.1rem 0 .35rem; font-size:1.24rem; line-height:1.25; }
+.orbital-lab p { margin:0; font-size:.9rem; line-height:1.55; }
+.orbital-lab a { color:inherit; text-underline-offset:.15em; }
+.orbital-lab .ol-comparison { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); gap:.6rem; }
+.ol-comparison > div { display:grid; gap:.22rem; padding:.6rem .7rem; border-left:3px solid #2a9b90; background:rgba(68,151,146,.09); }
+.ol-comparison > div + div { border-color:#a9a3c6; background:rgba(131,117,164,.08); }
+.ol-comparison small { color:inherit; font-size:.8rem; }
+.ol-comparison strong { font-size:1.02rem; line-height:1.4; overflow-wrap:anywhere; }
+.orbital-lab .ol-selector { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.4rem .8rem; font-weight:600; font-size:.95rem; }
+.ol-selector select { width:auto; max-width:100%; min-width:6rem; color:inherit; background-color:var(--card-bg,#fff); border:1px solid var(--ol-line); border-radius:.45rem; font:inherit; padding:.4rem .6rem; }
+.orbital-lab .ol-boxes { display:flex; flex-wrap:wrap; gap:.3rem; }
+.orbital-lab .ol-boxes button, .orbital-lab .ol-reset { cursor:pointer; color:inherit; background:transparent; border:1px solid var(--ol-line); border-radius:.4rem; appearance:none; }
+.orbital-lab .ol-boxes button { min-width:2.25rem; min-height:2.25rem; padding:.15rem; font:600 1.1rem/1 system-ui,sans-serif; }
+.orbital-lab .ol-boxes button[aria-pressed="true"] { color:white; background:#176961; border-color:#176961; }
+.orbital-lab :is(button,select,canvas,summary,a):focus-visible { outline:3px solid #53aab8; outline-offset:2px; }
+.orbital-lab .ol-plot { position:relative; overflow:hidden; background:radial-gradient(ellipse at center,#183639,#0e2328 75%); border:1px solid #304a50; border-radius:.7rem; }
+.ol-plot canvas { display:block; width:100%; height:auto; padding:0; margin:0; cursor:grab; touch-action:none; }
+.ol-plot canvas:active { cursor:grabbing; }
+.orbital-lab .ol-legend { position:absolute; left:.6rem; bottom:.45rem; color:#d4e4e3; font: .75rem/1.1 system-ui,sans-serif; pointer-events:none; }
+.ol-legend i { color:#7ae4d5; font-style:normal; font-weight:700; }
+.ol-legend i+i { margin-left:.5rem; color:#c69bf2; }
+.orbital-lab .ol-controls { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.4rem; font-size:.82rem; }
+.orbital-lab .ol-reset { padding:.4rem .6rem; font:inherit; }
+.orbital-lab details { padding:.55rem 0; border-block:1px solid var(--ol-line); }
+.orbital-lab details summary { cursor:pointer; font-size:.9rem; font-weight:600; }
+.orbital-lab details p { margin:.5rem 0 0; }
+.orbital-lab .ol-source { justify-self:start; font-size:.8rem; }
