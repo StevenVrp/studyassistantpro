@@ -1,19 +1,19 @@
 
         /* ===== Base Styles & Whitish-Gray Theme Variables ===== */
         :root {
-            --primary: #4a6bff;
-            --primary-light: #7a94ff;
-            --primary-dark: #3a56cc;
-            --secondary: #00c9a7;
-            --text: #2d3748;
+            --primary: #6e9bdb;
+            --primary-light: #95b6e4;
+            --primary-dark: #3a77cc;
+            --secondary: #285aa1;
+            --text: #2d3848;
             --text-light: #718096;
-            --bg: #F5F5F7; /* Whitish-gray background */
+            --bg: #f5f6f7; /* Whitish-gray background */
             --card: #ffffff;
             --border: #e2e8f0;
-            --high: #ff4757;
-            --medium: #ffa502;
-            --low: #2ed573;
-            --completed: #00b894;
+            --high: #6c9ada;
+            --medium: #3574cc;
+            --low: #3675cd;
+            --completed: #255393;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08);
@@ -22,41 +22,41 @@
             --radius-lg: 12px;
 
             /* Periodic Table Theme Mapping */
-            --bg-color: #F5F5F7;
+            --bg-color: #f5f6f7;
             --text-color: #2C2C2A;
             --text-sub: #8A8880;
             --header-bg: #FFFFFF;
             --card-bg: #FFFFFF;
             --border-color: rgba(0,0,0,0.12);
             --input-bg: #FFFFFF;
-            --placeholder-bg: #E6E3DB;
+            --placeholder-bg: #dbe0e6;
             --switch-bg: #EFEFEF;
-            --accent-blue: #042C53;
-            --footer-bg: #f4f4f6;
+            --accent-blue: #112746;
+            --footer-bg: #f4f5f6;
         }
 
         body.dark-mode {
-            --primary: #6c5ce7;
-            --primary-light: #a29bfe;
-            --primary-dark: #4834d4;
-            --bg: #1a1a2e;
-            --card: #16213e;
+            --primary: #6998da;
+            --primary-light: #aec7eb;
+            --primary-dark: #3a78ce;
+            --bg: #1a222e;
+            --card: #16273e;
             --text: #ffffff;
             --text-light: #b8b8b8;
-            --border: #2d3748;
+            --border: #2d3848;
 
             /* Periodic Table Dark Overrides */
-            --bg-color: #1a1a2e;
+            --bg-color: #1a222e;
             --text-color: #E0E0E0;
             --text-sub: #A0A0A0;
-            --header-bg: #16213e;
-            --card-bg: #16213e;
+            --header-bg: #16273e;
+            --card-bg: #16273e;
             --border-color: rgba(255,255,255,0.18);
             --input-bg: #222222;
             --placeholder-bg: #2A2A2A;
             --switch-bg: #2A2A2A;
-            --accent-blue: #4A90E2;
-            --footer-bg: #1a1a2e;
+            --accent-blue: #578bd5;
+            --footer-bg: #1a222e;
         }
 
         * {
@@ -110,7 +110,7 @@
         }
 
         .app-title .pro-badge {
-            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background: linear-gradient(90deg, #89aee1, #78a2dd, #6998da, #b2caec);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -207,7 +207,7 @@
         }
 
         .btn-danger:hover {
-            background-color: #e84118;
+            background-color: #3473cc;
         }
 
         .btn-icon {
@@ -218,7 +218,7 @@
         }
 
         .btn-startbtntimer {
-            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            background: linear-gradient(135deg, #255393 0%, #295da5 100%);
             color: white;
             border: none;
             cursor: pointer;

@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadLgBtn.id = 'downloadLgBtn';
     downloadLgBtn.className = 'btn download-btn';
     downloadLgBtn.style.color = 'white';
-    downloadLgBtn.innerHTML = '<i class="fas fa-download"></i> Download Graph';
-    downloadLgBtn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)';
+    downloadLgBtn.innerHTML = 'Download Graph';
+    downloadLgBtn.style.background = '#244d84';
     const lineGraphContainer = document.querySelectorAll('.chart-container')[0];
     if (lineGraphContainer) lineGraphContainer.appendChild(downloadLgBtn);
 
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadPgBtn.id = 'downloadPgBtn';
     downloadPgBtn.className = 'btn download-btn';
     downloadPgBtn.style.color = 'white';
-    downloadPgBtn.innerHTML = '<i class="fas fa-download"></i> Download Graph';
-    downloadPgBtn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)';
+    downloadPgBtn.innerHTML = 'Download Graph';
+    downloadPgBtn.style.background = '#244d84';
     const pieGraphContainer = document.querySelectorAll('.chart-container')[1];
     if (pieGraphContainer) pieGraphContainer.appendChild(downloadPgBtn);
 
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if(page==='stats'){ initCharts(); updateDataDisplay(); }
         if(page==='reminders') renderReminders();
-        if(hash==='timer') floatingTimer.style.display='block';
+        if(hash==='timer') openTimer();
     }
     window.addEventListener('hashchange',route);
     for(const button of [backBtn,backFromRemindersBtn]) button.onclick=()=>location.hash='tasks';
@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     label: 'Completed tasks (%)',
                     data: efficiencyData.filter(d=>d.metric==='completion').map(d => d.efficiency),
-                    borderColor: '#6c5ce7',
-                    backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                    borderColor: '#366eb7',
+                    backgroundColor: 'rgba(54, 110, 183, 0.12)',
                     tension: 0.3,
                     borderWidth: 2
                 }]
@@ -163,24 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const subjects = Object.keys(subjectTime);
         const timeData = subjects.map(s => subjectTime[s]);
-        const backgroundColors = subjects.map(s => {
-            switch (s) {
-                case 'biology': return '#00b894';
-                case 'physics': return '#0984e3';
-                case 'chemistry': return '#6c5ce7';
-                case 'math': return '#e84393';
-                case 'english': return '#fd79a8';
-                case 'chinese': return '#e17055';
-                case 'spanish': return '#fdcb6e';
-                case 'french': return '#a29bfe';
-                case 'history': return '#636e72';
-                case 'geography': return '#00cec9';
-                case 'technology': return '#2d3436';
-                case 'music': return '#fab1a0';
-                case 'business': return '#000367';
-                default: return '#dfe6e9';
-            }
-        });
+        const blues = ['#19385f','#3365a0','#5987bf','#85a9d3','#adc8e7','#4b6281','#698ab2'];
+        const backgroundColors = subjects.map((_,i) => blues[i % blues.length]);
 
         subjectChart = new Chart(subjectCtx, {
             type: 'pie',
@@ -241,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="task-content">
                             <span class="task-title">${escapeText(task.title)}</span>
                             <span class="task-subject">
-                                <i class="fas fa-tag"></i> ${task.subject ? task.subject.toUpperCase() : 'OTHER'}
+                                ${task.subject ? task.subject.toUpperCase() : 'OTHER'}
                             </span>
                         </div>
                         <div class="task-actions">
@@ -258,10 +242,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="task-title">${escapeText(task.title)}</span>
                             <div class="task-meta">
                                 <span class="task-priority priority-${task.priority}">
-                                    <i class="fas fa-exclamation-circle"></i> ${task.priority ? task.priority.toUpperCase() : 'NONE'}
+                                    ${task.priority ? task.priority.toUpperCase() : 'NONE'}
                                 </span>
                                 <span class="task-subject">
-                                    <i class="fas fa-tag"></i> ${task.subject ? task.subject.toUpperCase() : 'OTHER'}
+                                    ${task.subject ? task.subject.toUpperCase() : 'OTHER'}
                                 </span>
                             </div>
                         </div>
@@ -284,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!tasks.length) {
-            taskList.innerHTML='<div class="desk-empty"><svg aria-hidden="true"><use href="../assets/fa.svg#tasks"/></svg><h3>No tasks yet</h3><p>Add your first task to plan this session.</p><button type="button" class="empty-action">Create a task</button></div>';
+            taskList.innerHTML='<div class="desk-empty"><h3>No tasks yet</h3><p>Add your first task to plan this session.</p><button type="button" class="empty-action">Create a task</button></div>';
             taskList.querySelector('.empty-action').onclick=()=>taskInput.focus();
         }
         setupDragAndDrop();
@@ -355,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const items = [
                 {
-                    icon: 'fas fa-check-circle',
+
                     text: 'Complete All',
                     action: () => {
                         tasks.forEach(t => { t.completed = true; t.completedAt = new Date(); });
@@ -365,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 },
                 {
-                    icon: 'fas fa-trash-alt',
+
                     text: 'Clear Completed',
                     action: () => {
                         tasks = tasks.filter(t => !t.completed);
@@ -375,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 },
                 {
-                    icon: 'fas fa-sort',
+
                     text: settings.appMode === 'schedule' ? 'Sort by Time' : 'Sort by Priority',
                     action: () => {
                         if (settings.appMode === 'schedule') {
@@ -393,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
             items.forEach(item => {
                 const button = document.createElement('button');
                 button.className = 'menu-item';
-                button.innerHTML = `<i class="${item.icon}"></i> ${item.text}`;
+                button.innerHTML = `${item.text}`;
                 button.addEventListener('click', () => {
                     item.action();
                     menu.remove();
@@ -615,27 +599,48 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleTimerBtn.onclick=()=>{
         const collapsed=floatingTimer.classList.toggle('collapsed');
         toggleTimerBtn.textContent=collapsed?'+':'−';
+        keepTimerInView();
         toggleTimerBtn.setAttribute('aria-label',collapsed?'Expand timer':'Collapse timer');
     };
-    showTimerBtn.onclick=()=>{floatingTimer.style.display='block';};
-    closeTimerBtn.onclick=()=>{floatingTimer.style.display='none';};
-    window.addEventListener('storage',e=>{if(e.key===timerKey)restoreTimer();});
-    // Draggable Timer
-    let isDragging = false, offsetX = 0, offsetY = 0;
-    floatingTimer.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.timer-header')) {
-            isDragging = true;
-            offsetX = e.clientX - floatingTimer.getBoundingClientRect().left;
-            offsetY = e.clientY - floatingTimer.getBoundingClientRect().top;
-        }
+    const timerHandle = floatingTimer.querySelector('.timer-header');
+    let timerPosition = null;
+    let drag = null;
+    function moveTimer(x, y) {
+        const bounds = floatingTimer.getBoundingClientRect();
+        const margin = 8;
+        const left = Math.max(margin, Math.min(x, document.documentElement.clientWidth - bounds.width - margin));
+        const top = Math.max(margin, Math.min(y, window.innerHeight - bounds.height - margin));
+        floatingTimer.style.left = left + 'px';
+        floatingTimer.style.top = top + 'px';
+        timerPosition = {left, top};
+    }
+    function keepTimerInView() {
+        if (timerPosition && floatingTimer.style.display === 'block') moveTimer(timerPosition.left, timerPosition.top);
+    }
+    function openTimer() {
+        floatingTimer.style.display = 'block';
+        if (timerPosition) { keepTimerInView(); return; }
+        const trigger = showTimerBtn.getBoundingClientRect();
+        moveTimer(trigger.right - floatingTimer.offsetWidth, trigger.bottom + 10);
+    }
+    showTimerBtn.onclick = openTimer;
+    closeTimerBtn.onclick = () => { floatingTimer.style.display = 'none'; };
+    window.addEventListener('storage', e => { if (e.key === timerKey) restoreTimer(); });
+    window.addEventListener('resize', keepTimerInView);
+    timerHandle.addEventListener('pointerdown', e => {
+        if (e.button !== 0 || !e.isPrimary || e.target.closest('button')) return;
+        const rect = floatingTimer.getBoundingClientRect();
+        drag = {id:e.pointerId, dx:e.clientX-rect.left, dy:e.clientY-rect.top};
+        timerHandle.setPointerCapture(e.pointerId);
+        timerHandle.classList.add('dragging');
     });
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            floatingTimer.style.left = `${e.clientX - offsetX}px`;
-            floatingTimer.style.top = `${e.clientY - offsetY}px`;
-        }
+    timerHandle.addEventListener('pointermove', e => {
+        if (drag && e.pointerId === drag.id) moveTimer(e.clientX-drag.dx, e.clientY-drag.dy);
     });
-    document.addEventListener('mouseup', () => { isDragging = false; });
+    timerHandle.addEventListener('lostpointercapture', () => {
+        drag = null;
+        timerHandle.classList.remove('dragging');
+    });
 
     // ===== Settings Modal =====
     const settingsModal = document.getElementById('settingsModal');

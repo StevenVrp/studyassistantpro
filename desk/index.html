@@ -1,12 +1,12 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Study desk · Study Assistant Pro</title><link rel="icon" href="../Images/favicon.ico"><link rel="stylesheet" href="planner.css"><link rel="stylesheet" href="../assets/suite.css"><link rel="stylesheet" href="../assets/navigation.css"><link rel="stylesheet" href="desk.css"><link rel="stylesheet" href="workbench.css"></head><body class="desk-page"><div data-shell data-page="Study desk" data-root="../"></div><main class="workspace" id="workspace"><div class="frame"><header class="desk-head"><div class="desk-head-copy"><time id="desk-date"></time><h1>Study desk</h1></div><div class="desk-actions"><button type="button" id="showTimerBtn" class="suite-secondary"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#clock"/></svg>Timer</button><button id="settingsButton" class="suite-secondary"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#settings"/></svg>Settings</button></div></header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Study desk · Study Assistant Pro</title><link rel="icon" href="../Images/favicon.ico"><link rel="stylesheet" href="planner.css"><link rel="stylesheet" href="../assets/suite.css"><link rel="stylesheet" href="../assets/navigation.css"><link rel="stylesheet" href="desk.css"><link rel="stylesheet" href="workbench.css"></head><body class="desk-page"><div data-shell data-page="Study desk" data-root="../"></div><main class="workspace" id="workspace"><div class="frame"><header class="desk-head"><div class="desk-head-copy"><time id="desk-date"></time><h1>Study desk</h1></div><div class="desk-actions"><button type="button" id="showTimerBtn" class="suite-secondary">Timer</button><button id="settingsButton" class="suite-secondary">Settings</button></div></header>
 <div class="desk-ledger"><div class="ledger-progress"><svg viewBox="0 0 70 70" aria-hidden="true"><circle class="ring-base" cx="35" cy="35" r="28"/><circle class="ring-value" cx="35" cy="35" r="28" pathLength="100" stroke-dasharray="0 100"/></svg><div><span>Task progress</span><strong id="fraction">0%</strong></div></div>
-<a href="#tasks"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#tasks"/></svg><span>Open tasks</span><b id="n-tasks">0</b></a>
-<a href="#stats"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#check"/></svg><span>Completed</span><b id="n-check">0</b></a>
-<a href="#reminders"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#reminders"/></svg><span>Reminders</span><b id="n-calendar">0</b></a></div>
-<div class="desk-navigation"><nav class="desk-tabs" aria-label="Study tools"><a href="#tasks"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#tasks"/></svg>Tasks</a><a href="#stats"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#stats"/></svg>Statistics</a><a href="#reminders"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#reminders"/></svg>Reminders</a><a href="#flashcards"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#cards"/></svg>Flashcards</a><a href="#journal"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#journal"/></svg>Mistake journal</a></nav></div><section class="panel" id="flashcards" hidden><h2><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#cards"/></svg>Flashcards</h2><p>Write a question, then test yourself when its review is due.</p><form id="card-form" class="entry-form"><label>Question<input name="question" maxlength="500" required></label><label>Answer<textarea name="answer" maxlength="2000" required></textarea></label><button class="suite-action">Add flashcard</button></form><div id="review" aria-live="polite"></div><details><summary>Manage cards</summary><div id="card-list"></div></details></section>
-<section class="panel" id="journal" hidden><h2><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#journal"/></svg>Mistake journal</h2><p>Record what went wrong and the reasoning you’ll use next time.</p><form id="journal-form" class="entry-form"><label>Topic or problem<input name="topic" required maxlength="200"></label><label>Where I went wrong<textarea name="mistake" required maxlength="2000"></textarea></label><label>Correct reasoning<textarea name="reason" required maxlength="2000"></textarea></label><button class="suite-action">Save entry</button></form><div id="journal-list" aria-live="polite"></div></section><!-- Task Section (Home Mode) -->
+<a href="#tasks"><span>Open tasks</span><b id="n-tasks">0</b></a>
+<a href="#stats"><span>Completed</span><b id="n-check">0</b></a>
+<a href="#reminders"><span>Reminders</span><b id="n-calendar">0</b></a></div>
+<div class="desk-navigation"><nav class="desk-tabs" aria-label="Study tools"><a href="#tasks">Tasks</a><a href="#stats">Statistics</a><a href="#reminders">Reminders</a><a href="#flashcards">Flashcards</a><a href="#journal">Mistake journal</a></nav></div><section class="panel" id="flashcards" hidden><h2>Flashcards</h2><p>Write a question, then test yourself when its review is due.</p><form id="card-form" class="entry-form"><label>Question<input name="question" maxlength="500" required></label><label>Answer<textarea name="answer" maxlength="2000" required></textarea></label><button class="suite-action">Add flashcard</button></form><div id="review" aria-live="polite"></div><details><summary>Manage cards</summary><div id="card-list"></div></details></section>
+<section class="panel" id="journal" hidden><h2>Mistake journal</h2><p>Record what went wrong and the reasoning you’ll use next time.</p><form id="journal-form" class="entry-form"><label>Topic or problem<input name="topic" required maxlength="200"></label><label>Where I went wrong<textarea name="mistake" required maxlength="2000"></textarea></label><label>Correct reasoning<textarea name="reason" required maxlength="2000"></textarea></label><button class="suite-action">Save entry</button></form><div id="journal-list" aria-live="polite"></div></section><!-- Task Section (Home Mode) -->
             <section id="taskSection"><div class="task-layout">
-                <form id="taskForm" class="task-form compose"><h2 class="form-heading"><svg class="desk-icon" aria-hidden="true"><use href="../assets/fa.svg#pen"/></svg>New task</h2>
+                <form id="taskForm" class="task-form compose"><h2 class="form-heading">New task</h2>
                     <div class="form-group">
                         <label class="compose-title" for="taskInput">Task title</label><input type="text" aria-label="Task title" id="taskInput" class="form-control" placeholder="What will you work on?" required>
                         <label class="compose-subject" for="subjectSelect">Subject</label><select aria-label="Subject" id="subjectSelect" class="form-control form-select">
@@ -63,10 +63,10 @@
             <section id="graphSection">
                 <div class="graph-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
                     <button id="backBtn" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back
+                        Back
                     </button>
                     <h2 class="task-list-title">
-                        <i class="fas fa-chart-pie"></i> Statistics
+                        Statistics
                     </h2>
                 </div>
                 <div class="chart-container">
@@ -87,10 +87,10 @@
             <section id="remindersSection">
                 <div class="reminders-header" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
                     <button id="backFromRemindersBtn" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back
+                        Back
                     </button>
                     <h2 class="task-list-title">
-                        <i class="fas fa-bell"></i> Reminders
+                        Reminders
                     </h2>
                 </div>
                 <form id="reminderForm" class="task-form">
@@ -98,7 +98,7 @@
                         <input type="text" aria-label="Reminder text" id="reminderInput" class="form-control" placeholder="Reminder text..." required>
                         <input type="datetime-local" aria-label="Due date and time" id="reminderDueDate" class="form-control" required>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Reminder
+                            Add Reminder
                         </button>
                     </div>
                 </form>
@@ -118,7 +118,7 @@
 
             </div></main><!-- Floating Timer -->
     <div id="floatingTimer" class="floating-timer">
-        <div class="timer-header">
+        <div class="timer-header"><span class="drag-grip" aria-hidden="true"></span>
             <span>Study Timer</span>
             <div class="timer-controls">
                 <button aria-label="Collapse timer" id="toggleTimerBtn" class="btn btn-icon">−</button>
@@ -136,10 +136,10 @@
             <div class="timer-display" id="timerDisplay">00:00:00</div>
             <div class="timer-actions">
                 <button id="startTimerBtn" class="btn btn-startbtntimer">
-                    <i class="fas fa-play"></i> Start
+                    Start
                 </button>
                 <button id="resetTimerBtn" class="btn btn-secondary">
-                    <i class="fas fa-redo"></i> Reset
+                    Reset
                 </button>
             </div>
         </div>
