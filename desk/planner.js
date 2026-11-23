@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('hashchange',route);
     for(const button of [backBtn,backFromRemindersBtn]) button.onclick=()=>location.hash='tasks';
-    document.querySelector('[href="../desk/#timer"]').addEventListener('click',()=>floatingTimer.style.display='block');
     const escapeText = text => String(text).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
     // ===== Charts & Stats =====
     const downloadLineGraph = () => {

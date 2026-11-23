@@ -1,7 +1,7 @@
 (() => {
   const $=q=>document.querySelector(q), lab=window.OrbitalLab;
-  const families={alkali:['Alkali metal','#f4d2cc'],alkaline:['Alkaline earth','#f5dfae'],transition:['Transition metal','#d7dff7'],posttransition:['Post-transition','#dbd5f2'],metalloid:['Metalloid','#c7e6de'],nonmetal:['Nonmetal','#cdebd4'],halogen:['Halogen','#f3d3e5'],noble:['Noble gas','#dcebbd'],lanthanide:['Lanthanide','#ddd2ef'],actinide:['Actinide','#ecd2d5']};
-  const blocks={s:['s block','#f4d2cc'],p:['p block','#c7e6de'],d:['d block','#d7dff7'],f:['f block','#ddd2ef']};
+  const families={alkali:['Alkali metal','#ff9881'],alkaline:['Alkaline earth','#ffc354'],transition:['Transition metal','#7fbbff'],posttransition:['Post-transition','#a99cf3'],metalloid:['Metalloid','#63d6c6'],nonmetal:['Nonmetal','#90dd89'],halogen:['Halogen','#f993c2'],noble:['Noble gas','#d4e867'],lanthanide:['Lanthanide','#ba97ef'],actinide:['Actinide','#efa284']};
+  const blocks={s:['s block','#ff9881'],p:['p block','#63d6c6'],d:['d block','#7fbbff'],f:['f block','#ba97ef']};
   const block=e=>e.z===2?'s':(e.z>=57&&e.z<=70||e.z>=89&&e.z<=102)?'f':(e.z===71||e.z===103)?'d':e.group<=2?'s':e.group>=13?'p':'d';
   const metrics={radius:'Atomic radius (pm)',en:'Electronegativity (Pauling)',ion:'First ionization (kJ/mol)'};
   const cells=new Map(),table=$('#ptable');let current;
@@ -44,7 +44,7 @@
       btn.disabled=!(e.name.toLowerCase().includes(q)||e.sym.toLowerCase()===q||String(e.z)===q)||($('#exceptions').checked&&!lab.isException(e.z));
       if(!btn.disabled){count++;first??=e;}
       const value=e[mode];
-      btn.style.background=mode==='cat'?families[e.cat][1]:mode==='block'?blocks[block(e)][1]:value==null?'#eeeef0':'hsl(173 52% '+(96-36*(value-min)/(max-min))+'%)';
+      btn.style.background=mode==='cat'?families[e.cat][1]:mode==='block'?blocks[block(e)][1]:value==null?'#eeeef0':'hsl(181 77% '+(95-47*(value-min)/(max-min))+'%)';
       btn.querySelector('.measure').textContent=mode==='cat'?'':mode==='block'?block(e):value??'—';
     }
     $('#matches').textContent=count+' of 118 elements';
