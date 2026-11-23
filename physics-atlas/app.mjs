@@ -14,14 +14,14 @@ const button=(action,ico,title,cls='iconbtn',extra='')=>'<button class="'+cls+'"
 const named=(action,label,ico,cls='outline',extra='')=>'<button class="'+cls+'" data-action="'+action+'" '+extra+'>'+ (ico?icon(ico,15):'')+e(label)+'</button>';
 const tab=(target,on,group,label,ico)=>'<button data-'+group+'="'+target+'" class="'+(on?'on':'')+'" aria-pressed="'+on+'">'+(ico?icon(ico,14):'')+e(label)+'</button>';
 let favorites=get('favorites',[]),done=get('completed',[]),recent=get('recent',[]),notes=get('notes',[]),light=get('light',false);
-let lab,params,mode,config,model,data,time=0,playing=false,rate=1,baseRate=1,view='2D',expanded=new Set(),currentPanel='controls',analysis='graphs',graphKeys=[],graphRange=[],cursor=null,graphArea=false;
+let lab,params,mode,config,model,data,time=0,playing=false,rate=1,baseRate=1,view='2D',currentPanel='controls',analysis='graphs',graphKeys=[],graphRange=[],cursor=null,graphArea=false;
 let camera,canvasZoom=1,canvasPan=[0,0],markTime=null,showPath=true,showVectors=true,focus=null,liveFocus=null,challengeIdx=0,hintCount=0,solutionOpen=false,answerFeedback='',attempt='',reverse=null,savedObservations=[],modalType='',toastTimer,drag=null,foldInspector=false,foldGraphs=false,graphRaf=0;
 let instrument=null,points=[];
 const initialCamera=()=>({yaw:-.48,pitch:.55});
 const idFromHash=()=>decodeURIComponent(location.hash.slice(1)).split('/')[0];
 const labOf=()=>byId.get(idFromHash())||byId.get('orbit');
 function notify(msg){$('#toast').textContent=msg;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),2400)}
-const pageTitle=()=>document.title=lab.title+' · Physics Atlas';
+const pageTitle=()=>document.title=lab.title+' · Equationarium';
 function openLab(id,restore){
  const next=byId.get(id);if(!next)return;
  if($('#dialog').open)$('#dialog').close();
@@ -29,11 +29,11 @@ function openLab(id,restore){
  if(restore){Object.assign(params,restore.params);if(lab.modes?.includes(restore.mode))mode=restore.mode;Object.assign(config,restore.config)}
  instrument=null;points=[];view=restore?.view||(lab.spatial&&lab.id!=='projectile'?'3D':'2D');camera=initialCamera();canvasZoom=1;canvasPan=[0,0];playing=false;rate=1;currentPanel='controls';analysis='graphs';focus=null;liveFocus=null;
  showPath=true;showVectors=true;graphKeys=[lab.series[0].key];if(lab.id==='shm')graphKeys=lab.series.map(s=>s.key);
- expanded=new Set([lab.module]);challengeIdx=hintCount=0;solutionOpen=false;answerFeedback=attempt='';reverse=null;savedObservations=[];markTime=null;foldInspector=foldGraphs=false;
+ challengeIdx=hintCount=0;solutionOpen=false;answerFeedback=attempt='';reverse=null;savedObservations=[];markTime=null;foldInspector=foldGraphs=true;
  rebuild(restore?.fraction??(lab.id==='orbit'?.29:lab.id==='projectile'?.32:0));pageTitle();
  recent=[lab.id,...recent.filter(x=>x!==lab.id)].slice(0,12);save('recent',recent);document.body.classList.remove('rail-open');
  if(location.hash!=='#'+id)history.pushState(null,'','#'+id);
- header();rail();shell();window.scrollTo({top:0,behavior:'instant'});
+ header();shell();window.scrollTo({top:0,behavior:'instant'});
 }
 function rebuild(fraction=0){
  try{model=lab.build(params,mode,config);if(!(model.duration>0))throw Error('The model has no positive run interval.')}
@@ -43,19 +43,14 @@ function rebuild(fraction=0){
 }
 function header(){
  document.body.classList.toggle('light',light);
- $('#header').innerHTML=button('rail','panel','Toggle curriculum','iconbtn bare mobile-only')+'<button class="brand" data-action="home" aria-label="Physics Atlas home"><img src="./mark.svg" alt="">PHYSICS ATLAS</button><nav class="toplinks" aria-label="Workspace navigation">'+[['workspace','flask','Laboratory'],['catalog','book','Curriculum'],['notebook','note','Notebook']].map(([a,i,l])=>'<button class="toplink '+((modalType===a||(!modalType&&a==='workspace'))?'active':'')+'" aria-label="'+e(l)+'" data-action="'+a+'">'+icon(i,16)+'<span>'+l+'</span></button>').join('')+'</nav><div class="top-right">'+button('theme',light?'moon':'sun','Switch to '+(light?'dark':'light')+' mode','iconbtn bare')+'<a class="suite-home" href="../" aria-label="Return to Study Assistant Pro"><span>Study Assistant </span>Pro home</a></div>';
-}
-function rail(){
- $('#sidebar').innerHTML='<div class="rail-head"><strong>Curriculum</strong>'+button('rail','panel','Collapse curriculum','iconbtn bare')+'</div><button class="find" data-action="search">'+icon('search',15)+'Find experiment<kbd>/</kbd></button><div class="rail-label eyebrow">Physics modules</div>'+
- chapters.map(([name,ico],i)=>{const n=i+1,open=expanded.has(n);return '<button class="chapter-button '+(lab.module===n?'current':'')+'" data-chapter="'+n+'" aria-expanded="'+open+'">'+icon(ico,17)+e(name)+icon(open?'down':'chev',12)+'</button>'+(open?labs.filter(l=>l.module===n).map(l=>'<button class="child '+(l.id===lab.id?'active':'')+'" data-lab="'+l.id+'"><i></i>'+e(l.title)+(done.includes(l.id)?icon('check',12):'')+'</button>').join(''):'')}).join('')+
- '<div class="rail-foot"><button class="quick" data-action="favorites">'+icon('pin',15)+'Saved experiments<b>'+favorites.length+'</b></button><button class="quick" data-action="recent">'+icon('clock',15)+'Recently visited</button><button class="quick" data-action="progress">'+icon('check',15)+'Learning progress<b>'+done.length+'/'+labs.length+'</b></button><a class="quick" href="./coverage.html">Coverage &amp; source ↗</a></div>';
+ $('#header').innerHTML='<a class="brand" href="../equationarium/" aria-label="Equationarium courses"><img src="./mark.svg" alt="">EQUATIONARIUM</a><nav class="toplinks" aria-label="Workspace navigation">'+[['catalog','book','Curriculum'],['notebook','note','Notebook']].map(([a,i,l])=>'<button class="toplink '+((modalType===a||(!modalType&&a==='workspace'))?'active':'')+'" aria-label="'+e(l)+'" data-action="'+a+'">'+icon(i,16)+'<span>'+l+'</span></button>').join('')+'</nav><div class="top-right">'+button('theme',light?'moon':'sun','Switch to '+(light?'dark':'light')+' mode','iconbtn bare')+'<a class="suite-home" href="../" aria-label="Return to Study Assistant Pro"><span>Study Assistant </span>Pro home</a></div>';
 }
 const subtitles={orbit:'Explore how gravity shapes a satellite’s path, speed, and orbital period.',projectile:'Resolve a launch into horizontal and vertical motion, from release to impact.',shm:'Follow the exchange of kinetic and elastic energy through an oscillation.',optics:'Trace light across a boundary and locate the onset of total internal reflection.'};
 function shell(){
  const ch=chapters[lab.module-1],pinned=favorites.includes(lab.id);
- $('#main').innerHTML='<div class="crumbs">'+button('rail','panel','Toggle curriculum','iconbtn bare rail-reopen')+'Curriculum '+icon('chev',10)+'<em>'+e(ch[0])+'</em></div><div class="title-row"><div><h1>'+e(lab.title)+'</h1><p>'+e(subtitles[lab.id]||lab.intro.split(/(?<=\.) /)[0])+'</p></div>'+button('inspectorJump','sliders','Jump to experiment parameters','iconbtn mobile-only right')+button('favorite','pin',pinned?'Remove bookmark':'Bookmark experiment','iconbtn '+(pinned?'ico-on':''))+'</div>'+
+ $('#main').innerHTML='<div class="crumbs">'+'IPhO Physics '+icon('chev',10)+'<em>'+e(ch[0])+'</em></div><div class="title-row"><div><h1>'+e(lab.title)+'</h1><p>'+e(subtitles[lab.id]||lab.intro.split(/(?<=\.) /)[0])+'</p></div>'+button('inspectorJump','sliders','Jump to experiment parameters','iconbtn mobile-only right')+button('favorite','pin',pinned?'Remove bookmark':'Bookmark experiment','iconbtn '+(pinned?'ico-on':''))+'</div>'+
  '<div class="workspace"><div class="stage-col"><section class="panel scene-panel"><div class="panel-head">'+icon('cube',17)+'<h2>Simulation viewport</h2><span class="right"></span><div class="seg" id="viewseg"></div>'+button('expand','expand','Expand simulation','iconbtn bare')+'</div><div class="stage-box"><svg id="scene" class="stage-svg" viewBox="0 0 760 390" role="img" aria-label="'+e(lab.title)+' simulation"></svg><div class="stage-tools">'+button('zoomOut','minus','Zoom out')+button('zoomIn','plus','Zoom in')+button('cameraReset','compass','Reset camera')+'</div></div><div class="transport"><button id="play" class="play" data-action="play" aria-label="Play simulation"></button>'+button('restart','reset','Restart clock','iconbtn bare')+button('step','step','Step forward','iconbtn bare')+'<input id="timeline" type="range" aria-label="Simulation time" min="0" max="10000" step="1"><span class="time" id="clock"></span><select id="rate" aria-label="Playback rate">'+[.1,.25,.5,1,2,4].map(v=>opt(v,rate,v+'×')).join('')+'</select></div></section>'+
- '<section id="metrics" class="metrics" aria-label="Live measurements"></section><section class="panel analysis-panel"><div class="tabs" id="analysisTabs"></div><div class="panel-body" id="analysisBody"></div></section></div><div class="inspector-resize" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Resize inspector"></div><aside class="inspector"><section class="panel" id="inspectorPanel"><div class="panel-head">'+icon('sliders',16)+'<h2>Experiment inspector</h2><span class="right"></span>'+button('foldInspector','panel','Collapse or expand inspector','iconbtn bare')+'</div><div class="ins-content"><div class="tabs" id="insTabs"></div><div class="panel-body" id="insBody"></div><div class="panel-foot">'+named('store','Save setup','save','')+named('reset','Reset','reset','')+'</div></div></section><section class="sidenote"><h3>'+icon('book',15)+'Field notes</h3><p>'+e(lab.misconception)+'</p><button data-action="guide">Open lab guide '+icon('chev',11)+'</button></section></aside></div>';
+ '<section id="metrics" class="metrics" aria-label="Live measurements"></section><section class="panel analysis-panel"><div class="tabs" id="analysisTabs"></div><div class="panel-body" id="analysisBody"></div></section></div><div class="inspector"><section class="panel" id="inspectorPanel"><div class="panel-head">'+icon('sliders',16)+'<button class="settings-expand" data-action="foldInspector">Experiment settings</button><span class="right"></span>'+button('foldInspector','down','Expand or collapse settings','iconbtn bare')+'</div><div class="ins-content"><div class="tabs" id="insTabs"></div><div class="panel-body" id="insBody"></div><div class="panel-foot">'+named('store','Save setup','save','')+named('reset','Reset','reset','')+'</div></div></section></div></div>';
  const toolBox=$('.stage-tools');if(['orbit','projectile','optics'].includes(lab.id))toolBox.insertAdjacentHTML('afterbegin',button('instrument',lab.id==='optics'?'compass':'sliders',lab.id==='optics'?'Measure an angle':'Measure a distance'));
  const eventList=events(lab.id,model);if(eventList.length)$('#timeline').setAttribute('list','clock-events');
  $('#timeline').insertAdjacentHTML('afterend','<datalist id="clock-events">'+eventList.map(([name,t])=>'<option label="'+e(name)+'" value="'+Math.round(t/model.duration*10000)+'"></option>').join('')+'</datalist>');
@@ -92,7 +87,7 @@ function rangeControl(q){const value=params[q.key];return '<div class="param '+(
 function toggleRow(key,label,on){return '<button class="switch-row" role="switch" aria-checked="'+on+'" data-action="'+key+'">'+e(label)+'<span class="switch '+(on?'on':'')+'"><i></i></span></button>'}
 function inspect(){
  const i=$('#insBody');$('#insTabs').innerHTML=[['controls','Parameters'],['equations','Equations'],['assumptions','Model']].map(([k,l])=>tab(k,currentPanel===k,'ins',l)).join('');
- $('#inspectorPanel').classList.toggle('is-folded',foldInspector);
+ $('#inspectorPanel').classList.toggle('is-folded',foldInspector);all('[data-action="foldInspector"]').forEach(b=>b.setAttribute('aria-expanded',String(!foldInspector)));
  if(currentPanel==='controls'){
  const label=lab.id==='orbit'?'Central body':'Model selection';
  i.innerHTML=(lab.modes?.length?'<div class="section-line"><label class="subhead" for="mode">'+label+'</label></div><select class="mode" id="mode">'+lab.modes.map(v=>opt(v,mode)).join('')+'</select><div class="divider"></div>':'')+
@@ -143,7 +138,7 @@ function logTable(){
 }
 function challenge(){
  const b=$('#analysisBody'),ch=lab.challenges[challengeIdx];
- b.innerHTML='<div class="challenge"><div class="section-line"><span class="subhead">BPhO practice</span><select class="mode" style="width:auto" id="challengeIndex">'+lab.challenges.map((_,i)=>opt(i,challengeIdx,(i===0?'Core':'Extension')+' '+(i+1))).join('')+'</select></div><h3>'+e(ch.question)+'</h3><form id="answerForm" class="input-line"><input type="number" step="any" required id="answer" aria-label="Numerical answer" class="text-input" placeholder="Your answer" value="'+e(attempt)+'"><span>'+e(ch.unit)+'</span><button class="action" type="submit">Check answer</button></form><p class="feedback" role="status">'+e(answerFeedback)+'</p><div class="input-line">'+named('hint','Hint '+hintCount+'/'+ch.hints.length,'info','chip',hintCount>=ch.hints.length?'disabled':'')+named('solution',solutionOpen?'Hide solution':'Worked solution','book','chip')+'</div>'+ch.hints.slice(0,hintCount).map((h,i)=>'<p><b>Hint '+(i+1)+'.</b> '+e(h)+'</p>').join('')+(solutionOpen?'<p><strong>Solution.</strong> '+e(ch.solution)+'</p>':'')+
+ b.innerHTML='<div class="challenge"><div class="section-line"><span class="subhead">IPhO practice</span><select class="mode" style="width:auto" id="challengeIndex">'+lab.challenges.map((_,i)=>opt(i,challengeIdx,(i===0?'Core':'Extension')+' '+(i+1))).join('')+'</select></div><h3>'+e(ch.question)+'</h3><form id="answerForm" class="input-line"><input type="number" step="any" required id="answer" aria-label="Numerical answer" class="text-input" placeholder="Your answer" value="'+e(attempt)+'"><span>'+e(ch.unit)+'</span><button class="action" type="submit">Check answer</button></form><p class="feedback" role="status">'+e(answerFeedback)+'</p><div class="input-line">'+named('hint','Hint '+hintCount+'/'+ch.hints.length,'info','chip',hintCount>=ch.hints.length?'disabled':'')+named('solution',solutionOpen?'Hide solution':'Worked solution','book','chip')+'</div>'+ch.hints.slice(0,hintCount).map((h,i)=>'<p><b>Hint '+(i+1)+'.</b> '+e(h)+'</p>').join('')+(solutionOpen?'<p><strong>Solution.</strong> '+e(ch.solution)+'</p>':'')+
  '<div class="divider"><h3>Reverse challenge</h3><p>Set a target reading at a chosen instant. Adjust the experiment controls until the model reaches it.</p>'+(!reverse?named('reverseStart','Set a target','target'):reverseForm())+'</div></div>';if(reverse)reverseStatus();
 }
 function reverseForm(){return '<div class="input-line"><select id="reverseKey" aria-label="Target quantity">'+lab.metrics.map(q=>opt(q.key,reverse.key,q.label)).join('')+'</select><input id="reverseValue" class="text-input" type="number" step="any" aria-label="Target reading" value="'+e(reverse.value)+'"><span>'+e(lab.metrics.find(q=>q.key===reverse.key).unit)+'</span><label>At <input class="text-input" id="reverseFraction" type="number" min="0" max="100" step="1" aria-label="Percent of run" value="'+reverse.percent+'">% of run</label></div><p id="reverseFeedback"></p>'}
@@ -157,7 +152,7 @@ const labResult=l=>'<button class="result" data-lab="'+l.id+'">'+icon(chapters[l
 function openSearch(){dialog('Find an experiment','<input class="text-input find-input" id="query" type="search" aria-label="Search experiments" placeholder="Search a topic, experiment, or physical quantity…"><div id="results"></div>','search');searchResults('');$('#query').focus()}
 function searchResults(query){const terms=query.toLowerCase().trim().split(/\s+/);const hits=labs.filter(l=>{const text=[l.title,chapters[l.module-1][0],l.intro,...l.metrics.map(m=>m.label),...l.params.map(p=>p.label),...l.modes||[]].join(' ').toLowerCase();return terms.every(term=>text.includes(term))});$('#results').innerHTML=hits.map(labResult).join('')||'<p>No matching experiment. Try a quantity such as pressure or voltage.</p>'}
 function openCatalog(){
- dialog('Curriculum','<div class="section-line"><span>'+labs.length+' experiments across '+chapters.length+' modules</span>'+named('connections','Concept connections','link')+'</div><div class="cardgrid">'+chapters.map(([name,ico,full],i)=>'<button class="catalog-card" data-catalog="'+(i+1)+'">'+icon(ico,19)+'<b>'+e(name)+'</b><span>'+e(full)+' · '+labs.filter(l=>l.module===i+1).length+' labs</span></button>').join('')+'</div><div class="divider"><a href="./coverage.html" target="_blank">Full curriculum coverage and model limits ↗</a></div>','catalog');
+ dialog('IPhO curriculum','<div class="catalog-tools">'+named('search','Search labs','search')+named('favorites','Bookmarks','pin')+named('recent','Recent','clock')+named('progress','Reviewed','check')+'</div><div class="section-line"><span>'+labs.length+' experiments across '+chapters.length+' modules</span>'+named('connections','Concept connections','link')+'</div><div class="cardgrid">'+chapters.map(([name,ico,full],i)=>'<button class="catalog-card" data-catalog="'+(i+1)+'">'+icon(ico,19)+'<b>'+e(name)+'</b><span>'+e(full)+' · '+labs.filter(l=>l.module===i+1).length+' labs</span></button>').join('')+'</div><div class="divider"><a href="./coverage.html" target="_blank">Full curriculum coverage and model limits ↗</a></div>','catalog');
 }
 function conceptMap(selected=lab.id){
  const adjacent=connections.filter(c=>c.slice(0,2).includes(selected)&&c.slice(0,2).every(k=>byId.has(k)));
@@ -193,17 +188,16 @@ function startLoop(){cancelAnimationFrame(animation);let last=performance.now();
  if(playing)animation=requestAnimationFrame(frame)}animation=requestAnimationFrame(frame)}
 function action(name,el){
  switch(name){
- case 'home':openLab('orbit');break;
+ case 'home':location.href='../equationarium/';break;
  case 'workspace':if($('#dialog').open)$('#dialog').close();break;
- case 'rail':if(matchMedia('(max-width:900px)').matches)document.body.classList.toggle('rail-open');else document.body.classList.toggle('no-rail');break;
  case 'search':openSearch();break;case 'catalog':openCatalog();break;case 'notebook':notebook();break;
  case 'theme':light=!light;save('light',light);header();break;case 'close':$('#dialog').close();break;
- case 'favorite':favorites=favorites.includes(lab.id)?favorites.filter(x=>x!==lab.id):[...favorites,lab.id];save('favorites',favorites);rail();el.classList.toggle('ico-on',favorites.includes(lab.id));el.title=el.ariaLabel=favorites.includes(lab.id)?'Remove bookmark':'Bookmark experiment';break;
+ case 'favorite':favorites=favorites.includes(lab.id)?favorites.filter(x=>x!==lab.id):[...favorites,lab.id];save('favorites',favorites);el.classList.toggle('ico-on',favorites.includes(lab.id));el.title=el.ariaLabel=favorites.includes(lab.id)?'Remove bookmark':'Bookmark experiment';break;
  case 'favorites':case 'recent':case 'progress':{const list=name==='favorites'?favorites:name==='recent'?recent:done;dialog(name==='favorites'?'Saved experiments':name==='recent'?'Recently visited':'Reviewed experiments',list.map(id=>byId.get(id)).filter(Boolean).map(labResult).join('')||'<p>'+(name==='progress'?'Mark an experiment as reviewed in its lab guide.':'Use the bookmark beside an experiment title to save it here.')+'</p>',name);break}
- case 'complete':done=done.includes(lab.id)?done.filter(k=>k!==lab.id):[...done,lab.id];save('completed',done);rail();analysisShell();break;
+ case 'complete':done=done.includes(lab.id)?done.filter(k=>k!==lab.id):[...done,lab.id];save('completed',done);analysisShell();break;
  case 'connections':conceptMap();break;case 'goSelected':openLab(el.dataset.target);break;
  case 'inspectorJump':foldInspector=false;currentPanel='controls';inspect();$('#inspectorPanel').scrollIntoView({block:'start'});break;
- case 'guide':analysis='guide';analysisShell();$('.analysis-panel').scrollIntoView({block:'nearest'});break;
+ case 'guide':foldGraphs=false;analysis='guide';analysisShell();$('.analysis-panel').scrollIntoView({block:'nearest'});break;
  case 'store':storeDialog();break;case 'loadNote':{const n=notes[Number(el.dataset.index)];openLab(n.id,n);savedObservations=n.observations||[];notify('Setup restored.');break}
  case 'deleteNote':notes.splice(+el.dataset.index,1);save('notes',notes);notebook();break;
  case 'reset':params=defaults(lab);mode=lab.modes?.[0]||'';config={...lab.defaultConfig};time=0;focus=null;newConfig();notify('Default parameters restored.');break;
@@ -230,7 +224,6 @@ document.addEventListener('click',ev=>{
  const el=ev.target.closest('[data-action],[data-lab],[data-chapter],[data-catalog],[data-ins],[data-analysis],[data-view],[data-series],[data-var],[data-node],[data-workbench-action],[data-jump]');if(!el)return;const d=el.dataset;
  if(d.jump!==undefined){playing=false;time=Number(d.jump);renderFrame(true);return}if(d.action){action(d.action,el);return}if(d.lab){openLab(d.lab);return}if(d.node){conceptMap(d.node);return}
  if(d.catalog){const n=+d.catalog;dialog(chapters[n-1][0],'<p>'+e(chapters[n-1][3])+'</p>'+labs.filter(l=>l.module===n).map(labResult).join(''),'catalog');return}
- if(d.chapter){const n=+d.chapter;if(expanded.has(n))expanded.delete(n);else expanded.add(n);rail();return}
  if(d.ins){currentPanel=d.ins;inspect();return}if(d.analysis){analysis=d.analysis;foldGraphs=false;analysisShell();return}
  if(d.view){instrument=null;points=[];liveFocus=null;view=d.view;canvasZoom=1;canvasPan=[0,0];all('[data-view]').forEach(b=>b.classList.toggle('on',b.dataset.view===view));renderScene();return}
  if(d.series){if(graphKeys.includes(d.series)){if(graphKeys.length===1)return;graphKeys=graphKeys.filter(k=>k!==d.series)}else graphKeys.push(d.series);analysisShell();return}
