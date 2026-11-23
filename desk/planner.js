@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#desk-date').textContent = new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(new Date());
     // Navigation Elements
     const showTimerBtn = document.getElementById('showTimerBtn');
     const resetAllBtn = document.getElementById('resetAllBtn');
@@ -282,7 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        if (!tasks.length) taskList.textContent = 'Your task list is empty. Add a task above to start planning.';
+        if (!tasks.length) {
+            taskList.innerHTML='<div class="desk-empty"><svg aria-hidden="true"><use href="../assets/fa.svg#tasks"/></svg><h3>No tasks yet</h3><p>Add your first task to plan this session.</p><button type="button" class="empty-action">Create a task</button></div>';
+            taskList.querySelector('.empty-action').onclick=()=>taskInput.focus();
+        }
         setupDragAndDrop();
         updateTaskCount();
     };
@@ -292,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = tasks.length;
         document.querySelector('#n-tasks').textContent=remaining;
         document.querySelector('#n-check').textContent=total-remaining;
+        const percent=total ? Math.round(100*(total-remaining)/total) : 0;
+        document.querySelector('#fraction').textContent=percent+'%';
+        document.querySelector('.ring-value').setAttribute('stroke-dasharray',percent+' '+(100-percent));
         const countElement = document.getElementById('taskCount');
         if (countElement) {
             countElement.textContent = `${remaining} of ${total} tasks remaining`;
